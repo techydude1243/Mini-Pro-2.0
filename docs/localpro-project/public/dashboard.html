@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Provider Dashboard - LocalPro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-gray-900">LocalPro Dashboard</h1>
+      <div>
+        <a href="/" class="text-gray-700 hover:text-blue-600 mr-4 font-medium">Home</a>
+        <button id="sign-out-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-4 md:p-8">
+    <div id="loading" class="text-center text-gray-600 text-lg mt-8">Loading your profile...</div>
+
+    <!-- Edit Profile View -->
+    <div id="edit-profile-view" class="hidden">
+      <h2 class="text-3xl font-bold mb-2">Welcome, <span id="provider-name"></span>!</h2>
+      <p class="text-lg text-gray-600 mb-8">You are listed as a <span id="service-name" class="font-semibold"></span> provider.</p>
+      <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+        <h3 class="text-2xl font-semibold mb-6 border-b pb-4">Update Your Public Profile</h3>
+        <form id="edit-profile-form">
+          <div class="mb-4">
+            <label for="bio-edit" class="block text-gray-700 font-medium mb-2">Bio / Description</label>
+            <textarea id="bio-edit" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg"></textarea>
+          </div>
+          <div class="mb-4">
+            <label for="location-edit" class="block text-gray-700 font-medium mb-2">Location</label>
+            <input type="text" id="location-edit" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+          </div>
+          <div class="mb-6">
+            <label for="hourlyRate-edit" class="block text-gray-700 font-medium mb-2">Hourly Rate ($)</label>
+            <input type="number" id="hourlyRate-edit" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+          </div>
+          <div class="flex items-center">
+            <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold">Save Changes</button>
+            <span id="success-message" class="ml-4 text-green-600 font-medium"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Create Profile View -->
+    <div id="create-profile-view" class="hidden">
+      <h2 class="text-3xl font-bold mb-6">Create Your Provider Profile</h2>
+      <div class="bg-white p-6 md:p-8 rounded-lg shadow-md">
+        <p class="text-gray-600 mb-6">Welcome! To be listed on LocalPro, please provide a few more details about your services.</p>
+        <form id="create-profile-form">
+          <div class="mb-4">
+            <label for="serviceCategory-create" class="block text-gray-700 font-medium mb-2">What is your primary service?</label>
+            <select id="serviceCategory-create" class="w-full px-4 py-3 border border-gray-300 rounded-lg" required></select>
+          </div>
+          <div class="mb-4">
+            <label for="location-create" class="block text-gray-700 font-medium mb-2">Location</label>
+            <input type="text" id="location-create" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="e.g., New York" required>
+          </div>
+          <div class="mb-4">
+            <label for="hourlyRate-create" class="block text-gray-700 font-medium mb-2">Hourly Rate ($)</label>
+            <input type="number" id="hourlyRate-create" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="e.g., 75" required>
+          </div>
+          <div class="mb-6">
+            <label for="bio-create" class="block text-gray-700 font-medium mb-2">Bio / Description</label>
+            <textarea id="bio-create" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Describe your experience and services..."></textarea>
+          </div>
+          <div class="flex items-center">
+            <button type="submit" id="create-profile-btn" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold">Create Profile</button>
+            <span id="create-message" class="ml-4 font-medium"></span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('token');
+      const loadingDiv = document.getElementById('loading');
+      const editProfileView = document.getElementById('edit-profile-view');
+      const createProfileView = document.getElementById('create-profile-view');
+
+      // Edit Form Elements
+      const editProfileForm = document.getElementById('edit-profile-form');
+      const successMessage = document.getElementById('success-message');
+
+      // Create Form Elements
+      const createProfileForm = document.getElementById('create-profile-form');
+      const createProfileBtn = document.getElementById('create-profile-btn');
+      const createMessage = document.getElementById('create-message');
+
+      if (!token) {
+        window.location.href = '/';
+        return;
+      }
+
+      async function initializeDashboard() {
+        try {
+          const response = await fetch('/api/providers/me', {
+            headers: { 'x-auth-token': token }
+          });
+
+          if (response.status === 404) {
+            // No profile, show create form
+            loadingDiv.classList.add('hidden');
+            createProfileView.classList.remove('hidden');
+            populateServicesDropdown();
+          } else if (response.ok) {
+            // Profile exists, show edit form
+            const provider = await response.json();
+            populateEditForm(provider);
+            loadingDiv.classList.add('hidden');
+            editProfileView.classList.remove('hidden');
+          } else {
+            throw new Error('Could not fetch profile.');
+          }
+        } catch (error) {
+          loadingDiv.textContent = error.message;
+          console.error('Error:', error);
+        }
+      }
+
+      function populateEditForm(provider) {
+        document.getElementById('provider-name').textContent = provider.name;
+        document.getElementById('service-name').textContent = provider.serviceCategory.name;
+        document.getElementById('bio-edit').value = provider.bio || '';
+        document.getElementById('location-edit').value = provider.location || '';
+        document.getElementById('hourlyRate-edit').value = provider.hourlyRate || '';
+      }
+
+      async function populateServicesDropdown() {
+        const select = document.getElementById('serviceCategory-create');
+        const response = await fetch('/api/services');
+        const services = await response.json();
+        select.innerHTML = '<option value="">-- Select a Service --</option>';
+        services.forEach(service => {
+          const option = document.createElement('option');
+          option.value = service._id;
+          option.textContent = service.name;
+          select.appendChild(option);
+        });
+      }
+
+      // Edit Profile Submit
+      editProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        successMessage.textContent = 'Saving...';
+        const updatedData = {
+          bio: document.getElementById('bio-edit').value,
+          location: document.getElementById('location-edit').value,
+          hourlyRate: document.getElementById('hourlyRate-edit').value,
+        };
+        const response = await fetch('/api/providers/me', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+          body: JSON.stringify(updatedData)
+        });
+        if (response.ok) {
+          successMessage.textContent = 'Profile updated successfully!';
+          setTimeout(() => successMessage.textContent = '', 3000);
+        } else {
+          successMessage.textContent = 'Update failed.';
+        }
+      });
+
+      // Create Profile Submit with feedback
+      createProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        createMessage.textContent = 'Creating...';
+        createMessage.classList.remove('text-red-500', 'text-green-600');
+        createMessage.classList.add('text-gray-600');
+        createProfileBtn.disabled = true;
+
+        const newData = {
+          serviceCategory: document.getElementById('serviceCategory-create').value,
+          location: document.getElementById('location-create').value,
+          hourlyRate: document.getElementById('hourlyRate-create').value,
+          bio: document.getElementById('bio-create').value,
+        };
+
+        if (!newData.serviceCategory || !newData.location || !newData.hourlyRate) {
+          createMessage.textContent = 'Please fill out all required fields.';
+          createMessage.classList.add('text-red-500');
+          createProfileBtn.disabled = false;
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/providers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+            body: JSON.stringify(newData)
+          });
+
+          if (response.ok) {
+            createMessage.textContent = 'Profile created successfully! Reloading...';
+            createMessage.classList.remove('text-gray-600');
+            createMessage.classList.add('text-green-600');
+            setTimeout(() => window.location.reload(), 2000);
+          } else {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to create profile.');
+          }
+        } catch (error) {
+          createMessage.textContent = error.message;
+          createMessage.classList.add('text-red-500');
+          createProfileBtn.disabled = false;
+        }
+      });
+
+      // Sign Out
+      document.getElementById('sign-out-btn').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      });
+
+      initializeDashboard();
+    });
+  </script>
+</body>
+</html>
