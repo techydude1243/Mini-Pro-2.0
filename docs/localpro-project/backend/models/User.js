@@ -15,11 +15,20 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // ADD THIS ROLE FIELD
   role: {
     type: String,
     enum: ['customer', 'provider'], // Role must be one of these two values
     default: 'customer', // New users are customers by default
+  },
+  role: {
+    type: String,
+    enum: ['customer', 'provider'], // Role must be one of these two values
+    default: 'customer', // New users are customers by default
+  },
+  role: {
+    type: String,
+    enum: ['customer', 'provider', 'admin'], // Add 'admin' here
+    default: 'customer',
   },
 });
 

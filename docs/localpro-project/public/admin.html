@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - LocalPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-900">Admin Panel</h1>
+            <div>
+                <a href="/" class="text-gray-700 hover:text-blue-600 mr-4 font-medium">Home</a>
+                <button id="sign-out-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="admin-content" class="max-w-7xl mx-auto p-4 md:p-8 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm font-medium">Total Users</h3>
+                <p id="total-users" class="text-3xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm font-medium">Customers</h3>
+                <p id="total-customers" class="text-3xl font-bold text-blue-600">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-gray-500 text-sm font-medium">Providers</h3>
+                <p id="total-providers" class="text-3xl font-bold text-green-600">0</p>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="text-2xl font-bold mb-4">Manage All Users</h2>
+            <div class="bg-white rounded-lg shadow-md overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50">
+                        <tr class="border-b">
+                            <th class="p-4 font-semibold">Name</th>
+                            <th class="p-4 font-semibold">Email</th>
+                            <th class="p-4 font-semibold">Role</th>
+                            <th class="p-4 font-semibold">Date Registered</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">Manage Provider Profiles</h2>
+            <div class="bg-white rounded-lg shadow-md overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50">
+                        <tr class="border-b">
+                            <th class="p-4 font-semibold">Provider Name</th>
+                            <th class="p-4 font-semibold">User Email</th>
+                            <th class="p-4 font-semibold">Service</th>
+                            <th class="p-4 font-semibold">Location</th>
+                            <th class="p-4 font-semibold">Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody id="providers-table">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="loading" class="text-center text-gray-600 text-lg mt-8">Loading admin data...</div>
+    <div id="error-message" class="hidden text-center text-red-600 text-lg mt-8 p-8"></div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('token');
+            const loadingDiv = document.getElementById('loading');
+            const errorDiv = document.getElementById('error-message');
+            const contentDiv = document.getElementById('admin-content');
+
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                // Fetch both users and providers data at the same time
+                const [usersResponse, providersResponse] = await Promise.all([
+                    fetch('/api/admin/users', { headers: { 'x-auth-token': token } }),
+                    fetch('/api/admin/providers', { headers: { 'x-auth-token': token } })
+                ]);
+
+                if (!usersResponse.ok || !providersResponse.ok) {
+                    throw new Error('Access Denied. You must be an administrator to view this page.');
+                }
+
+                const users = await usersResponse.json();
+                const providers = await providersResponse.json();
+
+                // --- Populate Stats Cards ---
+                document.getElementById('total-users').textContent = users.length;
+                document.getElementById('total-providers').textContent = providers.length;
+                document.getElementById('total-customers').textContent = users.filter(u => u.role === 'customer').length;
+
+                // --- Render Users Table ---
+                const usersTable = document.getElementById('users-table');
+                users.forEach(user => {
+                    const registrationDate = new Date(user.createdAt).toLocaleDateString();
+                    usersTable.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4">${user.name}</td>
+                            <td class="p-4">${user.email}</td>
+                            <td class="p-4 capitalize">${user.role}</td>
+                            <td class="p-4 text-gray-600">${registrationDate}</td>
+                        </tr>
+                    `;
+                });
+
+                // --- Render Providers Table ---
+                const providersTable = document.getElementById('providers-table');
+                providers.forEach(provider => {
+                    providersTable.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4">${provider.name}</td>
+                            <td class="p-4 text-gray-600">${provider.user ? provider.user.email : 'N/A'}</td>
+                            <td class="p-4">${provider.serviceCategory.name}</td>
+                            <td class="p-4">${provider.location}</td>
+                            <td class="p-4 font-medium">$${provider.hourlyRate}/hr</td>
+                        </tr>
+                    `;
+                });
+                
+                // Show content
+                loadingDiv.classList.add('hidden');
+                contentDiv.classList.remove('hidden');
+
+            } catch (error) {
+                loadingDiv.classList.add('hidden');
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            }
+
+            document.getElementById('sign-out-btn').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = '/';
+            });
+        });
+    </script>
+</body>
+</html>

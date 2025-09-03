@@ -2,33 +2,30 @@
 const mongoose = require('mongoose');
 
 const providerSchema = new mongoose.Schema({
-  // Link to the User model
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true, // A user can only have one provider profile
+    unique: true,
   },
-  name: {
-    type: String,
-    required: true,
-  },
+  name: { type: String, required: true },
   serviceCategory: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Service',
     required: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
-  bio: {
-    type: String,
-    default: 'A trusted local service provider.',
-  },
-  hourlyRate: {
+  location: { type: String, required: true },
+  bio: { type: String, default: 'A trusted local service provider.' },
+  hourlyRate: { type: Number, required: true },
+
+  // ## ADD THESE NEW FIELDS ##
+  averageRating: {
     type: Number,
-    required: true,
+    default: 0,
+  },
+  reviewCount: {
+    type: Number,
+    default: 0,
   },
 });
 

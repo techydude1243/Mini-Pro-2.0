@@ -5,6 +5,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Provider Dashboard - LocalPro</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #reviews {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 32px 24px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    #reviews h2 {
+      text-align: center;
+      color: #2d6cdf;
+      margin-bottom: 24px;
+    }
+    #reviewForm {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #reviewForm label {
+      font-weight: 500;
+      color: #444;
+    }
+    #reviewForm input, #reviewForm textarea {
+      padding: 8px 10px;
+      border: 1px solid #d0d0d0;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #f7faff;
+      transition: border 0.2s;
+    }
+    #reviewForm input:focus, #reviewForm textarea:focus {
+      border-color: #2d6cdf;
+      outline: none;
+    }
+    #reviewForm button {
+      background: linear-gradient(90deg,#2d6cdf,#4fc3f7);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(45,108,223,0.12);
+      transition: background 0.2s;
+    }
+    #reviewForm button:hover {
+      background: linear-gradient(90deg,#4fc3f7,#2d6cdf);
+    }
+    #reviewsList {
+      margin-top: 32px;
+    }
+    .review-card {
+      background: #f7faff;
+      border-radius: 8px;
+      box-shadow: 0 1px 6px rgba(45,108,223,0.07);
+      padding: 16px 14px;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .review-rating {
+      color: #ffb400;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .review-text {
+      color: #333;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
   <header class="bg-white shadow">
@@ -76,23 +150,81 @@
         </form>
       </div>
     </div>
+
+    <!-- Danger Zone -->
+    <div class="mt-12 bg-red-50 border-l-4 border-red-400 p-6 rounded-lg shadow-md">
+      <h3 class="text-2xl font-semibold text-red-800">Danger Zone</h3>
+      <p class="text-red-700 mt-2 mb-4">Deleting your account is a permanent action and cannot be undone. This will permanently remove your user account and any associated provider profiles.</p>
+      <button id="delete-account-btn" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 font-semibold">Delete My Account</button>
+    </div>
   </main>
 
+  <section id="reviews">
+    <h2>Reviews & Ratings</h2>
+    <form id="reviewForm">
+      <label for="providerId">Provider ID:</label>
+      <input type="text" id="providerId" name="providerId" required>
+      <label for="serviceId">Service ID (optional):</label>
+      <input type="text" id="serviceId" name="serviceId">
+      <label for="rating">Rating (1-5):</label>
+      <input type="number" id="rating" name="rating" min="1" max="5" required>
+      <label for="reviewText">Review:</label>
+      <textarea id="reviewText" name="reviewText" required rows="3"></textarea>
+      <button type="submit">Submit Review</button>
+    </form>
+    <div id="reviewsList"></div>
+  </section>
+
   <script>
+    // Reviews logic
+    async function loadReviews() {
+      const providerId = document.getElementById('providerId').value;
+      const serviceId = document.getElementById('serviceId').value;
+      let url = '/api/reviews?';
+      if (providerId) url += `provider=${providerId}&`;
+      if (serviceId) url += `service=${serviceId}`;
+      const res = await fetch(url);
+      const reviews = await res.json();
+      const reviewsList = document.getElementById('reviewsList');
+      reviewsList.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+          <div class="review-text">${r.reviewText}</div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('reviewForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const provider = document.getElementById('providerId').value;
+      const service = document.getElementById('serviceId').value;
+      const rating = document.getElementById('rating').value;
+      const reviewText = document.getElementById('reviewText').value;
+      // Replace with actual user ID from authentication
+      const user = 'USER_ID';
+      await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, provider, service, rating, reviewText })
+      });
+      loadReviews();
+    });
+
+    document.getElementById('providerId').addEventListener('change', loadReviews);
+    document.getElementById('serviceId').addEventListener('change', loadReviews);
+
+    // Dashboard logic
     document.addEventListener('DOMContentLoaded', () => {
       const token = localStorage.getItem('token');
       const loadingDiv = document.getElementById('loading');
       const editProfileView = document.getElementById('edit-profile-view');
       const createProfileView = document.getElementById('create-profile-view');
-
-      // Edit Form Elements
       const editProfileForm = document.getElementById('edit-profile-form');
       const successMessage = document.getElementById('success-message');
-
-      // Create Form Elements
       const createProfileForm = document.getElementById('create-profile-form');
       const createProfileBtn = document.getElementById('create-profile-btn');
       const createMessage = document.getElementById('create-message');
+      const deleteBtn = document.getElementById('delete-account-btn');
 
       if (!token) {
         window.location.href = '/';
@@ -106,12 +238,10 @@
           });
 
           if (response.status === 404) {
-            // No profile, show create form
             loadingDiv.classList.add('hidden');
             createProfileView.classList.remove('hidden');
             populateServicesDropdown();
           } else if (response.ok) {
-            // Profile exists, show edit form
             const provider = await response.json();
             populateEditForm(provider);
             loadingDiv.classList.add('hidden');
@@ -146,7 +276,6 @@
         });
       }
 
-      // Edit Profile Submit
       editProfileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         successMessage.textContent = 'Saving...';
@@ -168,7 +297,6 @@
         }
       });
 
-      // Create Profile Submit with feedback
       createProfileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         createMessage.textContent = 'Creating...';
@@ -213,11 +341,34 @@
         }
       });
 
-      // Sign Out
       document.getElementById('sign-out-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         window.location.href = '/';
       });
+
+      if (deleteBtn) {
+        deleteBtn.addEventListener('click', async () => {
+          if (confirm('Are you sure you want to delete your account? This action is permanent.')) {
+            try {
+              const response = await fetch('/api/users/me', {
+                method: 'DELETE',
+                headers: { 'x-auth-token': token }
+              });
+
+              if (!response.ok) {
+                throw new Error('Failed to delete account.');
+              }
+
+              localStorage.removeItem('token');
+              alert('Your account has been successfully deleted.');
+              window.location.href = '/';
+            } catch (error) {
+              console.error('Delete Error:', error);
+              alert(error.message);
+            }
+          }
+        });
+      }
 
       initializeDashboard();
     });

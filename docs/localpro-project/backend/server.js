@@ -12,7 +12,7 @@ require('dotenv').config();
 const app = express();
 
 // 3. MIDDLEWARE
-// Enable Cross-Origin Resource Sharing (CORS) to allow frontend to communicate with backend
+// Enable Cross-Origin Resource Sharing (CORS)
 app.use(cors());
 // Enable the express app to parse JSON formatted request bodies
 app.use(express.json());
@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
 // 4. DATABASE CONNECTION
-// Connect to MongoDB Atlas using the connection string from the .env file
+// Connect to MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Successfully connected to MongoDB Atlas!'))
   .catch((error) => {
@@ -29,32 +29,24 @@ mongoose.connect(process.env.MONGODB_URI)
   });
 
 // 5. API ROUTES
-// Import the router for services
+// Import all routers in one block
 const servicesRouter = require('./routes/services');
-// Tell the app to use the services router for any URL starting with /api/services
-app.use('/api/services', servicesRouter);
-
-// Add these two lines for providers
 const providersRouter = require('./routes/providers');
-app.use('/api/providers', providersRouter);
-// ... (other routes) ...
-
-// Add these two lines for users
 const usersRouter = require('./routes/users');
+const adminRouter = require('./routes/admin');
+const reviewsRouter = require('./routes/reviews');
+
+// Use all routers in one block
+app.use('/api/services', servicesRouter);
+app.use('/api/providers', providersRouter);
 app.use('/api/users', usersRouter);
-/*
-// --- PLACEHOLDER FOR FUTURE ROUTES ---
-// When you create your providers.js route file, you will uncomment lines like these:
-// const providersRouter = require('./routes/providers');
-// app.use('/api/providers', providersRouter);
-*/
+app.use('/api/admin', adminRouter);
+app.use('/api/reviews', reviewsRouter);
 
 
 // 6. DEFINE PORT AND START SERVER
-// Use the port from environment variables for deployment, or 5000 for local development
 const PORT = process.env.PORT || 5000;
 
-// Start the server and listen for incoming requests on the specified port
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

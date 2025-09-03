@@ -1,14 +1,15 @@
-// backend/routes/users.js
 const express = require('express');
-const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Provider = require('../models/Provider');
+const auth = require('../middleware/auth');
+
+const router = express.Router();
 
 // @route   POST /api/users/register
 // @desc    Register a new user
 router.post('/register', async (req, res) => {
-  // We now accept 'role' from the request body
   const { name, email, password, role } = req.body;
 
   try {
@@ -17,12 +18,11 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create a new user with the provided role
     user = new User({
       name,
       email,
       password,
-      role: role === 'provider' ? 'provider' : 'customer', // Securely set the role
+      role: role === 'provider' ? 'provider' : 'customer',
     });
 
     const salt = await bcrypt.genSalt(10);
@@ -36,7 +36,8 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ... (your existing /login route) ...
+// @route   POST /api/users/login
+// @desc    Login user and return JWT token
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -59,5 +60,40 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// @route   GET /api/users/me
+// @desc    Get the current logged-in user's data
+router.get('/me', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   DELETE /api/users/me
+// @desc    Delete the current user's account and profile
+router.delete('/me', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // If the user is a provider, delete their provider profile first
+    if (user.role === 'provider') {
+      await Provider.findOneAndDelete({ user: req.user.id });
+    }
+
+    // Delete the user account
+    await User.findByIdAndDelete(req.user.id);
+
+    res.json({ message: 'Account deleted successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;

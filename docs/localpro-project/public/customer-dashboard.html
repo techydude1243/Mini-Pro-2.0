@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - LocalPro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-900">LocalPro</h1>
+            <div>
+                <a href="/" class="text-gray-700 hover:text-blue-600 mr-4 font-medium">Home</a>
+                <button id="sign-out-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Out</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8">
+        <div id="loading" class="text-center text-gray-600 text-lg mt-8">Loading your info...</div>
+        
+        <div id="dashboard-content" class="hidden bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold mb-6 border-b pb-4">Your Profile</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500">Full Name</h3>
+                    <p id="user-name" class="text-lg text-gray-900"></p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500">Email Address</h3>
+                    <p id="user-email" class="text-lg text-gray-900"></p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-500">Account Type</h3>
+                    <p id="user-role" class="text-lg text-gray-900 capitalize"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-red-50 border-l-4 border-red-400 p-6 rounded-lg shadow-md">
+            <h3 class="text-2xl font-semibold text-red-800">Danger Zone</h3>
+            <p class="text-red-700 mt-2 mb-4">Deleting your account is a permanent action and cannot be undone.</p>
+            <button id="delete-account-btn" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 font-semibold">Delete My Account</button>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+
+            const loadingDiv = document.getElementById('loading');
+            const contentDiv = document.getElementById('dashboard-content');
+
+            async function fetchUserProfile() {
+                try {
+                    const response = await fetch('/api/users/me', {
+                        headers: { 'x-auth-token': token }
+                    });
+                    if (!response.ok) throw new Error('Could not fetch user profile.');
+                    const user = await response.json();
+
+                    document.getElementById('user-name').textContent = user.name;
+                    document.getElementById('user-email').textContent = user.email;
+                    document.getElementById('user-role').textContent = user.role;
+
+                    loadingDiv.classList.add('hidden');
+                    contentDiv.classList.remove('hidden');
+                } catch (error) {
+                    console.error(error);
+                    loadingDiv.textContent = 'Failed to load profile. Please try logging in again.';
+                }
+            }
+
+            document.getElementById('sign-out-btn').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = '/';
+            });
+
+            const deleteBtn = document.getElementById('delete-account-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', async () => {
+                    if (confirm('Are you sure you want to delete your account? This action is permanent.')) {
+                        try {
+                            const response = await fetch('/api/users/me', {
+                                method: 'DELETE',
+                                headers: { 'x-auth-token': token }
+                            });
+                            if (!response.ok) throw new Error('Failed to delete account.');
+                            localStorage.removeItem('token');
+                            alert('Your account has been successfully deleted.');
+                            window.location.href = '/';
+                        } catch (error) {
+                            console.error('Delete Error:', error);
+                            alert(error.message);
+                        }
+                    }
+                });
+            }
+
+            fetchUserProfile();
+        });
+    </script>
+</body>
+</html>
