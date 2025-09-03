@@ -35,6 +35,7 @@ const providersRouter = require('./routes/providers');
 const usersRouter = require('./routes/users');
 const adminRouter = require('./routes/admin');
 const reviewsRouter = require('./routes/reviews');
+const bookingsRouter = require('./routes/bookings');
 
 // Use all routers in one block
 app.use('/api/services', servicesRouter);
@@ -42,6 +43,7 @@ app.use('/api/providers', providersRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/reviews', reviewsRouter);
+app.use('/api/bookings', bookingsRouter);
 
 
 // 6. DEFINE PORT AND START SERVER
