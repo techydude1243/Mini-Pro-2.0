@@ -14,6 +14,7 @@
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- Header -->
     <header class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -36,11 +37,12 @@
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Find Trusted Local Service Providers</h2>
             <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">Connect with verified professionals in your area. From plumbing to electrical work, find the right expert for your needs.</p>
-            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6">
+            <div id="search-container" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-6">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                     <div class="md:col-span-2">
                         <label for="service-search" class="block text-sm font-medium text-gray-700 mb-1">Service</label>
@@ -74,6 +76,7 @@
         </div>
     </section>
 
+    <!-- Popular Services -->
     <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl font-bold text-gray-900 text-center mb-12">Popular Services</h3>
@@ -88,14 +91,16 @@
         </div>
     </section>
 
+    <!-- How It Works Section -->
     <section id="how-it-works" class="py-16">
          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center"><h2 class="text-3xl font-bold text-gray-900">How LocalPro Works</h2><p class="mt-4 text-lg text-gray-600">A simple and transparent process for everyone.</p></div>
-            <div class="mt-16"><h3 class="text-2xl font-semibold text-gray-900 text-center mb-10">For Customers</h3><div class="grid md:grid-cols-3 gap-8"><div></div><div></div><div></div></div></div>
-            <div class="mt-20"><h3 class="text-2xl font-semibold text-gray-900 text-center mb-10">For Providers</h3><div class="grid md:grid-cols-3 gap-8"><div></div><div></div><div></div></div></div>
+            <div class="mt-16"><h3 class="text-2xl font-semibold text-gray-900 text-center mb-10">For Customers</h3><div class="grid md:grid-cols-3 gap-8"><div class="text-center"><div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">🔍</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">1. Search & Discover</h4><p class="text-gray-600">Use our powerful search to find skilled professionals. Filter by service type, location, and even price to compare your options and discover the perfect expert for your job.</p></div><div class="text-center"><div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">💬</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">2. Connect & Hire</h4><p class="text-gray-600">Once you find a provider you like, you can contact them directly. Discuss your project needs, get a quote, and schedule the service at a time that works for you, all with confidence.</p></div><div class="text-center"><div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">✅</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">3. Get It Done & Review</h4><p class="text-gray-600">Your chosen professional completes the job to your satisfaction. After it's done, leave a review to share your experience and help build a trusted community for everyone.</p></div></div></div>
+            <div class="mt-20"><h3 class="text-2xl font-semibold text-gray-900 text-center mb-10">For Providers</h3><div class="grid md:grid-cols-3 gap-8"><div class="text-center"><div class="bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">📝</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">1. Create Your Profile</h4><p class="text-gray-600">Register as a provider to unlock your dashboard. Here you can build a detailed profile showcasing your skills, location, rates, and bio to attract potential customers.</p></div><div class="text-center"><div class="bg-red-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">🎯</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">2. Get Discovered</h4><p class="text-gray-600">Once your profile is active, you will appear in customer search results. Local customers looking for your specific skills will be able to find and contact you directly for jobs.</p></div><div class="text-center"><div class="bg-indigo-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"><span class="text-3xl">🌟</span></div><h4 class="text-xl font-semibold text-gray-900 mb-4">3. Build Your Reputation</h4><p class="text-gray-600">Deliver high-quality service to earn positive reviews from your customers. A strong reputation increases your visibility, builds trust, and helps you secure more jobs through LocalPro.</p></div></div></div>
         </div>
     </section>
 
+    <!-- Featured Providers -->
     <section class="py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-3xl font-bold text-gray-900 text-center mb-12">Top-Rated Providers Near You</h3>
@@ -103,22 +108,25 @@
         </div>
     </section>
 
+    <!-- CTA Section -->
     <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-700">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h3 class="text-3xl font-bold text-white mb-6">Ready to Find Your Perfect Service Provider?</h3><p class="text-xl text-blue-100 mb-8">Join thousands of satisfied customers who found reliable professionals through LocalPro.</p><div class="flex flex-col sm:flex-row gap-4 justify-center"><button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Find a Provider</button><button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">Become a Provider</button></div></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><h3 class="text-3xl font-bold text-white mb-6">Ready to Get Started?</h3><div class="flex flex-col sm:flex-row gap-4 justify-center"><button id="cta-find-provider" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Find a Provider</button><button id="cta-become-provider" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">Become a Provider</button></div></div>
     </section>
 
+    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="grid md:grid-cols-4 gap-8"><div><div class="flex items-center mb-4"><div class="bg-blue-600 text-white p-2 rounded-lg mr-3"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" /></svg></div><h4 class="text-xl font-bold">LocalPro</h4></div><p class="text-gray-400">Connecting customers with trusted local service providers.</p></div><div><h5 class="font-semibold mb-4">For Customers</h5><ul class="space-y-2 text-gray-400"><li><a href="#" class="hover:text-white">Find Services</a></li><li><a href="#how-it-works" class="hover:text-white">How It Works</a></li><li><a href="#" class="hover:text-white">Safety</a></li></ul></div><div><h5 class="font-semibold mb-4">For Providers</h5><ul class="space-y-2 text-gray-400"><li><a href="#" class="hover:text-white">Join as Provider</a></li><li><a href="#" class="hover:text-white">Provider Resources</a></li><li><a href="#" class="hover:text-white">Success Stories</a></li></ul></div><div><h5 class="font-semibold mb-4">Support</h5><ul class="space-y-2 text-gray-400"><li><a href="#" class="hover:text-white">Help Center</a></li><li><a href="#" class="hover:text-white">Contact Us</a></li><li><a href="#" class="hover:text-white">Terms of Service</a></li></ul></div></div><div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400"><p>&copy; 2025 LocalPro. All rights reserved.</p></div></div>
     </footer>
 
+    <!-- Authentication Modal -->
     <div id="auth-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md m-4">
             <div class="text-right"><button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl">&times;</button></div>
             <h2 id="modal-title" class="text-3xl font-bold text-center text-gray-900 mb-6">Sign In</h2>
             <form id="auth-form">
                 <div id="name-field" class="mb-4"><label for="name" class="block text-gray-700 font-medium mb-2">Name</label><input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Enter your name"></div>
-                <div class="mb-4"><label for="email" class="block text-gray-700 font-medium mb-2">Email</label><input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Enter your email" required></div>
-                <div class="mb-6">
+                <div id="email-field" class="mb-4"><label for="email" class="block text-gray-700 font-medium mb-2">Email</label><input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="Enter your email" required></div>
+                <div id="password-field" class="mb-6">
                     <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
                     <div class="relative">
                         <input type="password" id="password" name="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg pr-10" placeholder="Enter your password" required>
@@ -126,6 +134,10 @@
                     </div>
                 </div>
                 <div id="role-field" class="flex items-center mb-6"><input type="checkbox" id="is-provider" name="is-provider" class="h-4 w-4 text-blue-600 border-gray-300 rounded"><label for="is-provider" class="ml-2 block text-sm text-gray-900">Sign up as a Provider</label></div>
+                <div id="otp-field" class="hidden mb-6">
+                    <label for="otp" class="block text-gray-700 font-medium mb-2">Verification Code</label>
+                    <input type="text" id="otp" name="otp" class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center tracking-widest text-lg" placeholder="Enter 6-digit OTP">
+                </div>
                 <p id="error-message" class="text-red-500 text-center mb-4"></p>
                 <button type="submit" id="submit-btn" class="w-full bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold">Sign In</button>
             </form>
@@ -136,11 +148,18 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // ==========================================================
-            // ## DOM ELEMENT SELECTIONS ##
+            // ## SCRIPT-WIDE VARIABLES & DOM SELECTIONS ##
             // ==========================================================
+            const apiBaseUrl = 'http://localhost:5000'; // Define the base URL for all API calls
+            let currentUserRole = 'guest';
+            let isLoginMode = true;
+            let registrationStep = 1;
+            let emailForVerification = '';
+
             const signInBtn = document.getElementById('sign-in-btn');
             const getStartedBtn = document.getElementById('get-started-btn');
             const headerAuthContainer = signInBtn ? signInBtn.parentElement : null;
+            const searchContainer = document.getElementById('search-container');
             const authModal = document.getElementById('auth-modal');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const authForm = document.getElementById('auth-form');
@@ -161,7 +180,11 @@
             const maxRateInput = document.getElementById('max-rate');
             const sortBySelect = document.getElementById('sort-by');
             const providersContainer = document.querySelector('.grid.md\\:grid-cols-2.lg\\:grid-cols-3');
-            let isLoginMode = true;
+            const ctaFindBtn = document.getElementById('cta-find-provider');
+            const ctaBecomeBtn = document.getElementById('cta-become-provider');
+            const emailField = document.getElementById('email-field');
+            const passwordField = document.getElementById('password-field');
+            const otpField = document.getElementById('otp-field');
 
             // ==========================================================
             // ## PASSWORD VISIBILITY TOGGLE ##
@@ -180,23 +203,70 @@
             });
 
             // ==========================================================
-            // ## AUTHENTICATION FUNCTIONS ##
+            // ## MODAL & FORM STATE MANAGEMENT ##
+            // ==========================================================
+            function showModal(loginMode = true) {
+                isLoginMode = loginMode;
+                registrationStep = 1;
+                updateFormView();
+                authForm.reset();
+                errorMessage.textContent = '';
+                authModal.classList.remove('hidden');
+            }
+            function hideModal() {
+                authModal.classList.add('hidden');
+            }
+            function updateFormView() {
+                nameField.style.display = 'none';
+                roleField.style.display = 'none';
+                otpField.style.display = 'none';
+                emailField.style.display = 'block';
+                passwordField.style.display = 'block';
+                promptText.parentElement.style.display = 'block';
+                if (isLoginMode) {
+                    modalTitle.textContent = 'Sign In';
+                    submitBtn.textContent = 'Sign In';
+                    promptText.textContent = 'Need an account?';
+                    switchFormLink.textContent = 'Register';
+                } else {
+                    if (registrationStep === 1) {
+                        modalTitle.textContent = 'Register';
+                        submitBtn.textContent = 'Get Verification Code';
+                        nameField.style.display = 'block';
+                        roleField.style.display = 'flex';
+                        promptText.textContent = 'Already have an account?';
+                        switchFormLink.textContent = 'Sign In';
+                    } else {
+                        modalTitle.textContent = 'Verify Your Email';
+                        submitBtn.textContent = 'Verify & Create Account';
+                        emailField.style.display = 'none';
+                        passwordField.style.display = 'none';
+                        nameField.style.display = 'none';
+                        roleField.style.display = 'none';
+                        promptText.parentElement.style.display = 'none';
+                        otpField.style.display = 'block';
+                    }
+                }
+            }
+
+            // ==========================================================
+            // ## AUTHENTICATION & UI LOGIC ##
             // ==========================================================
             async function updateUIForLoginState() {
                 const token = localStorage.getItem('token');
+                if (searchContainer) searchContainer.style.display = 'block';
                 if (token && headerAuthContainer) {
                     try {
-                        const response = await fetch('/api/users/me', { headers: { 'x-auth-token': token } });
-                        if (!response.ok) {
-                            localStorage.removeItem('token');
-                            return;
-                        }
+                        const response = await fetch(`${apiBaseUrl}/api/users/me`, { headers: { 'x-auth-token': token } });
+                        if (!response.ok) { localStorage.removeItem('token'); currentUserRole = 'guest'; return; }
                         const user = await response.json();
+                        currentUserRole = user.role;
                         let dashboardLinks = '';
                         if (user.role === 'admin') {
                             dashboardLinks = `<a href="/admin.html" class="text-gray-700 hover:text-red-600 font-medium">Admin Panel</a>`;
                         } else if (user.role === 'provider') {
                             dashboardLinks = `<a href="/dashboard.html" class="text-gray-700 hover:text-blue-600 font-medium">Provider Dashboard</a>`;
+                            if (searchContainer) searchContainer.style.display = 'none';
                         } else {
                             dashboardLinks = `<a href="/customer-dashboard.html" class="text-gray-700 hover:text-blue-600 font-medium">My Dashboard</a>`;
                         }
@@ -211,69 +281,109 @@
                         });
                     } catch (error) {
                         localStorage.removeItem('token');
+                        currentUserRole = 'guest';
                         console.error('Session validation error:', error);
                     }
                 }
             }
 
-            function showModal(loginMode = true) {
-                isLoginMode = loginMode;
-                modalTitle.textContent = isLoginMode ? 'Sign In' : 'Register';
-                nameField.style.display = isLoginMode ? 'none' : 'block';
-                roleField.style.display = isLoginMode ? 'none' : 'flex';
-                submitBtn.textContent = isLoginMode ? 'Sign In' : 'Create Account';
-                promptText.textContent = isLoginMode ? 'Need an account?' : 'Already have an account?';
-                switchFormLink.textContent = isLoginMode ? 'Register' : 'Sign In';
-                errorMessage.textContent = '';
-                authForm.reset();
-                authModal.classList.remove('hidden');
-            }
-
-            function hideModal() {
-                authModal.classList.add('hidden');
-            }
-
             async function handleAuthFormSubmit(event) {
                 event.preventDefault();
                 errorMessage.textContent = '';
-                const email = authForm.email.value;
-                const password = authForm.password.value;
-                let endpoint, body;
+                submitBtn.disabled = true;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const name = document.getElementById('name').value;
+                const role = document.getElementById('is-provider').checked ? 'provider' : 'customer';
+                const otp = document.getElementById('otp').value;
+                
                 if (isLoginMode) {
-                    endpoint = '/api/users/login';
-                    body = { email, password };
-                } else {
-                    endpoint = '/api/users/register';
-                    const name = authForm.name.value;
-                    const role = isProviderCheckbox.checked ? 'provider' : 'customer';
-                    body = { name, email, password, role };
-                }
-                try {
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body)
-                    });
-                    const data = await response.json();
-                    if (!response.ok) throw new Error(data.message || 'Something went wrong');
-                    if (isLoginMode) {
+                    try {
+                        const response = await fetch(`${apiBaseUrl}/api/users/login`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email, password })
+                        });
+                        const data = await response.json();
+                        if (!response.ok) throw new Error(data.message);
                         localStorage.setItem('token', data.token);
                         hideModal();
-                        updateUIForLoginState();
-                    } else {
-                        alert('Registration successful! Please sign in.');
-                        showModal(true);
+                        window.location.reload();
+                    } catch (error) {
+                        errorMessage.textContent = error.message;
                     }
-                } catch (error) {
-                    errorMessage.textContent = error.message;
+                } else {
+                    if (registrationStep === 1) {
+                        emailForVerification = email;
+                        try {
+                            const response = await fetch(`${apiBaseUrl}/api/users/register`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ name, email, password, role })
+                            });
+                            const data = await response.json();
+                            if (!response.ok) throw new Error(data.message);
+                            registrationStep = 2;
+                            updateFormView();
+                        } catch (error) {
+                            errorMessage.textContent = error.message;
+                        }
+                    } else {
+                        try {
+                            const response = await fetch(`${apiBaseUrl}/api/users/verify`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: emailForVerification, otp })
+                            });
+                            const data = await response.json();
+                            if (!response.ok) throw new Error(data.message);
+                            alert('Account created successfully! Please sign in.');
+                            showModal(true);
+                        } catch (error) {
+                            errorMessage.textContent = error.message;
+                        }
+                    }
                 }
+                submitBtn.disabled = false;
             }
 
             // ==========================================================
-            // ## SEARCH FUNCTIONS ##
+            // ## BOOKING, SEARCH & DISPLAY FUNCTIONS ##
             // ==========================================================
+            window.handleBooking = async function(providerId) {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('Please sign in to book a provider.');
+                    showModal(true);
+                    return;
+                }
+                const serviceDate = new Date();
+                serviceDate.setDate(serviceDate.getDate() + 1);
+                if (confirm(`Are you sure you want to book this provider for tomorrow, ${serviceDate.toLocaleDateString()}?`)) {
+                    try {
+                        const response = await fetch(`${apiBaseUrl}/api/bookings`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'x-auth-token': token },
+                            body: JSON.stringify({ providerId, serviceDate: serviceDate.toISOString() })
+                        });
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.message || 'Booking failed.');
+                        }
+                        alert('Booking successful! Redirecting to your dashboard.');
+                        window.location.href = '/customer-dashboard.html';
+                    } catch (error) {
+                        alert(error.message);
+                    }
+                }
+            }
+
             async function handleProviderSearch() {
-                let url = '/api/providers?';
+                if (currentUserRole === 'guest') {
+                    alert("Please sign in as a customer to search for providers.");
+                    showModal(true);
+                    return;
+                }
                 const params = new URLSearchParams();
                 if (serviceInput.value) params.append('service', serviceInput.value);
                 if (locationInput.value) params.append('location', locationInput.value);
@@ -282,7 +392,7 @@
                 if (sortBySelect.value) params.append('sortBy', sortBySelect.value);
                 searchButton.textContent = 'Searching...';
                 try {
-                    const response = await fetch(url + params.toString());
+                    const response = await fetch(`${apiBaseUrl}/api/providers?${params.toString()}`);
                     const providers = await response.json();
                     displayProviders(providers);
                 } catch (error) {
@@ -294,7 +404,7 @@
             
             function displayProviders(providers) {
                 providersContainer.innerHTML = '';
-                if (providers.length === 0) {
+                if (!providers || providers.length === 0) {
                     providersContainer.innerHTML = '<p class="text-center col-span-full text-gray-600">No providers found matching your criteria.</p>';
                     return;
                 }
@@ -308,32 +418,36 @@
                         }
                         return stars;
                     };
+                    const bookButtonHTML = currentUserRole !== 'provider'
+                        ? `<button onclick="handleBooking('${provider._id}')" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold">Book Now</button>`
+                        : `<span class="text-sm text-gray-500 italic">Log in as a customer to book</span>`;
                     const providerCardHTML = `
-                <div class="provider-card bg-white rounded-2xl shadow-lg p-6">
-                    <div class="flex items-center mb-4">
-                        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">${initials}</div>
-                        <div>
-                            <h4 class="text-xl font-semibold text-gray-900">${provider.name}</h4>
-                            <p class="text-gray-600">${provider.serviceCategory.name}</p>
+                    <div class="provider-card bg-white rounded-2xl shadow-lg p-6 flex flex-col">
+                        <div class="flex items-center mb-4">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">${initials}</div>
+                            <div>
+                                <h4 class="text-xl font-semibold text-gray-900">${provider.name}</h4>
+                                <p class="text-gray-600">${provider.serviceCategory.name}</p>
+                                <p class="text-sm text-gray-500 mt-1">${provider.location}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex items-center mb-3">
-                        <div class="flex text-yellow-400 text-xl mr-2">${generateStars(provider.averageRating)}</div>
-                        <span class="text-gray-600">(${provider.reviewCount} reviews)</span>
-                    </div>
-                    <p class="text-gray-700 mb-4">${provider.bio}</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-blue-600 font-semibold">$${provider.hourlyRate}/hour</span>
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg">Contact</button>
-                    </div>
-                </div>`;
+                        <div class="flex items-center mb-3">
+                            <div class="flex text-yellow-400 text-xl mr-2">${generateStars(provider.averageRating)}</div>
+                            <span class="text-gray-600">(${provider.reviewCount} reviews)</span>
+                        </div>
+                        <p class="text-gray-700 mb-4 flex-grow">${provider.bio}</p>
+                        <div class="flex justify-between items-center mt-auto">
+                            <span class="text-blue-600 font-semibold">$${provider.hourlyRate}/hour</span>
+                            ${bookButtonHTML}
+                        </div>
+                    </div>`;
                     providersContainer.insertAdjacentHTML('beforeend', providerCardHTML);
                 });
             }
 
             async function loadInitialProviders() {
                 try {
-                    const response = await fetch('/api/providers');
+                    const response = await fetch(`${apiBaseUrl}/api/providers`);
                     const providers = await response.json();
                     displayProviders(providers.slice(0, 3));
                 } catch (error) {
@@ -351,13 +465,27 @@
             if (switchFormLink) switchFormLink.addEventListener('click', (e) => { e.preventDefault(); showModal(!isLoginMode); });
             if (authForm) authForm.addEventListener('submit', handleAuthFormSubmit);
             if (searchButton) searchButton.addEventListener('click', handleProviderSearch);
-
+            if (ctaFindBtn) {
+                ctaFindBtn.addEventListener('click', () => {
+                    showModal(false);
+                    isProviderCheckbox.checked = false;
+                });
+            }
+            if (ctaBecomeBtn) {
+                ctaBecomeBtn.addEventListener('click', () => {
+                    showModal(false);
+                    isProviderCheckbox.checked = true;
+                });
+            }
+            
             // ==========================================================
             // ## INITIALIZATION ##
             // ==========================================================
-            updateUIForLoginState();
-            loadInitialProviders();
+            updateUIForLoginState().then(() => {
+                loadInitialProviders();
+            });
         });
     </script>
 </body>
 </html>
+
